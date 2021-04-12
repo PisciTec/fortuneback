@@ -13,7 +13,7 @@
 
 service: service-template
 # app and org for use with dashboard.serverless.com
-app: fortuneKairos
+app: fortuneKairosApp
 org: fortunekairos
 
 # You can pin your service to only deploy with a specific Serverless version

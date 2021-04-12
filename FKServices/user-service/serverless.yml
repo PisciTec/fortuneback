@@ -11,9 +11,9 @@
 #
 # Happy Coding!
 
-org: digiloc
-app: digiloc
-service: usuario-service
+org: fortunekairos
+app: fortunekairosapp
+service: user-service
 
 # app and org for use with dashboard.serverless.com
 #app: your-app-name
@@ -48,8 +48,8 @@ provider:
           - "dynamodb:BatchGetItem"
           - "dynamodb:BatchWriteItem"
         Resource:
-          - arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/${self:custom.dynamodb.usuarioTabela}
-          - arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/${self:custom.dynamodb.usuarioTabela}/index/*
+          - arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/${self:custom.dynamodb.userTable}
+          - arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/${self:custom.dynamodb.userTable}/index/*
 
 #    - Effect: "Allow"
 #      Action:
@@ -67,7 +67,7 @@ provider:
 
 # you can define service wide environment variables here
   environment:
-    DYNAMODB_USER_TABLE: ${self:custom.dynamodb.usuarioTabela}
+    DYNAMODB_USER_TABLE: ${self:custom.dynamodb.userTable}
     JWT_SECRET: ${param:JWT_SECRET}
 #  environment:
 #    variable1: value1
@@ -98,7 +98,7 @@ functions:
       - http:
           method: get
           cors: true         
-          path: /v1/usuarios
+          path: /v1/users
 
   loginUser:
     handler: src/functions/login.login
@@ -179,26 +179,26 @@ plugins:
 
 custom:
   dynamodb: 
-    usuarioTabela: ${self:service}-usuario-${self:provider.stage}
+    userTable: ${self:service}-users-${self:provider.stage}
   serverless-mocha-plugin:
     testTemplate: templates/test-template.ejs
     functionTemplate: templates/function-template.ejs
 
 resources:
   Resources:
-    usuarioTabela:
+    userTable:
       Type: AWS::DynamoDB::Table
       DeletionPolicy: Retain
       Properties:
-        TableName: ${self:custom.dynamodb.usuarioTabela}
+        TableName: ${self:custom.dynamodb.userTable}
         AttributeDefinitions: 
-          - AttributeName: email
-            AttributeType: S
           - AttributeName: funcao
+            AttributeType: S
+          - AttributeName: email
             AttributeType: S
         KeySchema:
-          - AttributeName: email
-            KeyType: HASH
           - AttributeName: funcao
+            KeyType: HASH
+          - AttributeName: email
             KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
