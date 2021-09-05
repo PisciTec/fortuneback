@@ -8,11 +8,13 @@ module.exports.login = async (event, context) => {
 
   const queryUserParams = {
     TableName: process.env.DYNAMODB_USER_TABLE,
-    KeyConditionExpression:'#username = :username',
+    KeyConditionExpression:'#username = :username and #funcao = :funcao',
     ExpressionAttributeNames: {
+      '#funcao' : 'funcao',
       '#username': 'email'
     },
     ExpressionAttributeValues:{
+      ':funcao' : body.funcao,
       ':username': body.username
     }
   }

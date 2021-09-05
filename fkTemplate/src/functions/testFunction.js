@@ -1,5 +1,5 @@
 'use strict';
-
+const AWS = require('aws-sdk')
 module.exports.testFunction = async (event, context) => {
   return {
     statusCode: 200,

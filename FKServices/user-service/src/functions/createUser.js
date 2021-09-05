@@ -5,7 +5,7 @@ const uuid = require('uuid')
 module.exports.createUser = async (event, context) => {
   const body = JSON.parse(event.body)
   const username = body.username
-  const password = "digilocInicial"
+  const password = "senhaInicial"
   const funcao = body.funcao;
   let uuidId = uuid.v1()
   const nome = body.nome;
